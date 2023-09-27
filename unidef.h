@@ -11,4 +11,14 @@
 */
 typedef int ElemType;
 
+/*
+* 顺序存储结构（如顺序表、顺序栈）初始大小
+*/
+#define SEQ_INIT_SIZE 100
+
+/*
+* 顺序存储结构（如顺序表、顺序栈）增量大小
+*/
+#define SEQ_INCREAMENT 10
+
 #endif // !_WYL_UNIDEF

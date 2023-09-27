@@ -21,12 +21,18 @@
     <ClCompile Include="linear_list.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="stack.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="linear_list.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="unidef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stack.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

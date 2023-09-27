@@ -7,14 +7,14 @@
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 void InitSeqList(SeqList* p_seq)
 {
-	p_seq->elem = (ElemType*)malloc(INIT_SIZE * sizeof(ElemType));
-	if (p_seq == NULL)
+	p_seq->elem = (ElemType*)malloc(SEQ_INIT_SIZE * sizeof(ElemType));
+	if (p_seq->elem == NULL)
 	{
 		printf("Error: -- InitSeqList -- fail to alloc memory.\n");
 		exit(EXIT_FAILURE);
 	}
 	p_seq->length = 0;
-	p_seq->list_size = INIT_SIZE;
+	p_seq->list_size = SEQ_INIT_SIZE;
 }
 
 void InsertSeqElem(SeqList* p_seq, int i, ElemType elem)
@@ -30,15 +30,15 @@ void InsertSeqElem(SeqList* p_seq, int i, ElemType elem)
 	// 判断当前顺序表是否已满，若是，则扩展顺序表所占空间
 	if (p_seq->length == p_seq->list_size)
 	{
-		ElemType* nbase = (ElemType*)realloc(p_seq->elem, (p_seq->list_size + INCREMENT_SIZE) * sizeof(ElemType));
+		ElemType* nbase = (ElemType*)realloc(p_seq->elem, (p_seq->list_size + SEQ_INCREAMENT) * sizeof(ElemType));
 		if (nbase != NULL)
 		{
 			p_seq->elem = nbase; // 重设第一个元素地址，因扩展空间后地址可能改变
-			p_seq->list_size += INCREMENT_SIZE; // 更新顺序表可容纳的元素个数
+			p_seq->list_size += SEQ_INCREAMENT; // 更新顺序表可容纳的元素个数
 		}
 		else
 		{
-			printf("Error: -- InsertSeqElem -- fail to alloc memory.\n");
+			printf("Error: -- InsertSeqElem -- fail to realloc memory.\n");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -67,6 +67,17 @@ void DeleteSeqElem(SeqList* p_seq, int i)
 		p_seq->elem[k - 1] = p_seq->elem[k];
 	}
 	p_seq->length--;
+}
+
+void DestroySeqList(SeqList* p_seq)
+{
+	if (p_seq != NULL)
+	{
+		free(p_seq->elem);
+		p_seq->elem = NULL;
+		p_seq->length = 0;
+		p_seq->list_size = 0;
+	}
 }
 
 ElemType GetSeqElem(SeqList seq, int i)
@@ -266,6 +277,22 @@ void ReverseLinkList(LinkList* p_list)
 			p_next = p_next->next;
 		}
 	}
+}
+
+void DestroyLinkList(LinkList* p_list)
+{
+	LNode* p_head = *p_list;
+	if (p_head == NULL) return;
+
+	LNode* p_cur;
+	while (p_head->next)
+	{
+		p_cur = p_head->next;
+		p_head->next = p_cur->next;
+		free(p_cur);
+	}
+	free(p_head);
+	*p_list = NULL;
 }
 
 int GetLinkLength(LinkList list)

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "linear_list.h"
+#include "stack.h"
 
 int main(void)
 {
@@ -23,6 +24,8 @@ int main(void)
 		printf("%d, ", GetSeqElem(seq_list, i));
 	}
 	printf("\b\b \n");
+	// 销毁
+	DestroySeqList(&seq_list);
 
 	// 链表
 	LinkList link_list;
@@ -44,4 +47,22 @@ int main(void)
 		printf("%d, ", GetLinkElem(link_list, i));
 	}
 	printf("\b\b \n");
+	// 销毁
+	DestroyLinkList(&link_list);
+
+	// 顺序栈
+	SeqStack seq_stack;
+	// 初始化
+	InitSeqStack(&seq_stack);
+	// 入栈
+	for (int i = 0; i < 10; i++)
+	{
+		Push(&seq_stack, i);
+	}
+	// 出栈
+	Pop(&seq_stack);
+	// 读取栈顶元素
+	printf("Stack top: %d\n", GetTop(seq_stack));
+	// 销毁
+	DestroySeqStack(&seq_stack);
 }

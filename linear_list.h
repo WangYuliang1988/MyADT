@@ -49,9 +49,6 @@
 //
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-#define INIT_SIZE 100 // 顺序表初始大小
-#define INCREMENT_SIZE 10 // 顺序表动态扩展增量
-
 /*
 * 顺序表
 */
@@ -78,6 +75,11 @@ void InsertSeqElem(SeqList* p_seq, int i, ElemType elem);
 * 删除位置 i 的元素
 */
 void DeleteSeqElem(SeqList* p_seq, int i);
+
+/*
+* 销毁
+*/
+void DestroySeqList(SeqList* p_seq);
 
 /*
 * 获取位置 i 的元素
@@ -130,6 +132,11 @@ void DeleteLinkElem(LinkList* p_list, int i);
 * 逆置链表元素
 */
 void ReverseLinkList(LinkList* p_list);
+
+/*
+* 销毁
+*/
+void DestroyLinkList(LinkList* p_list);
 
 /*
 * 获取链表长度
