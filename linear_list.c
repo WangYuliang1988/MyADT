@@ -7,8 +7,8 @@
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 void InitSeqList(SeqList* p_seq)
 {
-	p_seq->elem = (ElemType*)malloc(SEQ_INIT_SIZE * sizeof(ElemType));
-	if (p_seq->elem == NULL)
+	p_seq->p_base = (ElemType*)malloc(SEQ_INIT_SIZE * sizeof(ElemType));
+	if (p_seq->p_base == NULL)
 	{
 		printf("Error: -- InitSeqList -- fail to alloc memory.\n");
 		exit(EXIT_FAILURE);
@@ -30,10 +30,10 @@ void InsertSeqElem(SeqList* p_seq, int i, ElemType elem)
 	// 判断当前顺序表是否已满，若是，则扩展顺序表所占空间
 	if (p_seq->length == p_seq->list_size)
 	{
-		ElemType* nbase = (ElemType*)realloc(p_seq->elem, (p_seq->list_size + SEQ_INCREAMENT) * sizeof(ElemType));
-		if (nbase != NULL)
+		ElemType* p_newb = (ElemType*)realloc(p_seq->p_base, (p_seq->list_size + SEQ_INCREAMENT) * sizeof(ElemType));
+		if (p_newb != NULL)
 		{
-			p_seq->elem = nbase; // 重设第一个元素地址，因扩展空间后地址可能改变
+			p_seq->p_base = p_newb; // 重设第一个元素地址，因扩展空间后地址可能改变
 			p_seq->list_size += SEQ_INCREAMENT; // 更新顺序表可容纳的元素个数
 		}
 		else
@@ -46,9 +46,9 @@ void InsertSeqElem(SeqList* p_seq, int i, ElemType elem)
 	// 尾部元素至位置 i 元素依次下移，然后将新元素插入位置 i，并将 length 加 1
 	for (int k = p_seq->length - 1; k >= i; k--)
 	{
-		p_seq->elem[k + 1] = p_seq->elem[k];
+		p_seq->p_base[k + 1] = p_seq->p_base[k];
 	}
-	p_seq->elem[i] = elem;
+	p_seq->p_base[i] = elem;
 	p_seq->length++;
 }
 
@@ -64,7 +64,7 @@ void DeleteSeqElem(SeqList* p_seq, int i)
 	// 位置 i + 1 元素至尾部元素依次上移，并将 length 减 1，实现删除
 	for (int k = i + 1; k < p_seq->length; k++)
 	{
-		p_seq->elem[k - 1] = p_seq->elem[k];
+		p_seq->p_base[k - 1] = p_seq->p_base[k];
 	}
 	p_seq->length--;
 }
@@ -73,28 +73,28 @@ void DestroySeqList(SeqList* p_seq)
 {
 	if (p_seq != NULL)
 	{
-		free(p_seq->elem);
-		p_seq->elem = NULL;
+		free(p_seq->p_base);
+		p_seq->p_base = NULL;
 		p_seq->length = 0;
 		p_seq->list_size = 0;
 	}
 }
 
-ElemType GetSeqElem(SeqList seq, int i)
+void GetSeqElem(SeqList seq, int i, ElemType* p_elem)
 {
 	if (i < 0 || i >= seq.length)
 	{
 		printf("Error: -- GetSeqElem -- %d is out of index.\n", i);
 		exit(EXIT_FAILURE);
 	}
-	return seq.elem[i];
+	*p_elem = seq.p_base[i];
 }
 
-ElemType GetSeqElemPre(SeqList seq, ElemType cur_e)
+void GetSeqElemPre(SeqList seq, ElemType cur_e, ElemType* p_pre)
 {
 	for (int i = 0; i < seq.length; i++)
 	{
-		if (seq.elem[i] == cur_e)
+		if (seq.p_base[i] == cur_e)
 		{
 			if (i == 0)
 			{
@@ -103,7 +103,7 @@ ElemType GetSeqElemPre(SeqList seq, ElemType cur_e)
 			}
 			else
 			{
-				return seq.elem[i - 1];
+				*p_pre = seq.p_base[i - 1];
 			}
 		}
 	}
@@ -111,11 +111,11 @@ ElemType GetSeqElemPre(SeqList seq, ElemType cur_e)
 	exit(EXIT_FAILURE);
 }
 
-ElemType GetSeqElemNext(SeqList seq, ElemType cur_e)
+void GetSeqElemNext(SeqList seq, ElemType cur_e, ElemType* p_next)
 {
 	for (int i = 0; i < seq.length; i++)
 	{
-		if (seq.elem[i] == cur_e)
+		if (seq.p_base[i] == cur_e)
 		{
 			if (i == seq.length - 1)
 			{
@@ -124,7 +124,7 @@ ElemType GetSeqElemNext(SeqList seq, ElemType cur_e)
 			}
 			else
 			{
-				return seq.elem[i + 1];
+				*p_next = seq.p_base[i + 1];
 			}
 		}
 	}
@@ -151,7 +151,7 @@ void InitLinkList(LinkList* p_list)
 		exit(EXIT_FAILURE);
 	}
 	p_head->elem = -1; // 头结点数据域的存储内容不做要求
-	p_head->next = NULL; // 头结点指针域指向首元素结点，因此时单链表中还没有元素，故设为 NULL
+	p_head->p_next = NULL; // 头结点指针域指向首元素结点，因此时单链表中还没有元素，故设为 NULL
 
 	// 将头指针指向头结点
 	*p_list = p_head; // p_list 是指向头结点指针的指针，*p_list 是指向头结点的指针
@@ -177,7 +177,7 @@ void InsertLinkElem(LinkList* p_list, int i, ElemType elem)
 	int k = 0;
 	while (k < i && p_pre != NULL) // 限制 p_pre != NULL，因为当 p_pre 为 NULL 时，则尾结点的位置是 k-1，而 k 的最大值是 i-1，则尾结点位置最大值为 i-2，从而不存在位置 i-1 的结点
 	{
-		p_pre = p_pre->next;
+		p_pre = p_pre->p_next;
 		k++;
 	}
 
@@ -198,8 +198,8 @@ void InsertLinkElem(LinkList* p_list, int i, ElemType elem)
 	p_newd->elem = elem;
 
 	// 改变指针域指向
-	p_newd->next = p_pre->next;
-	p_pre->next = p_newd;
+	p_newd->p_next = p_pre->p_next;
+	p_pre->p_next = p_newd;
 }
 
 void DeleteLinkElem(LinkList* p_list, int i)
@@ -218,7 +218,7 @@ void DeleteLinkElem(LinkList* p_list, int i)
 	LNode* p_pre = *p_list;
 	
 	// 空链表，无法进行删除操作
-	if (p_pre->next == NULL)
+	if (p_pre->p_next == NULL)
 	{
 		printf("Error: -- DeleteLinkElem -- LinkList is empty.\n");
 		exit(EXIT_FAILURE);
@@ -228,21 +228,21 @@ void DeleteLinkElem(LinkList* p_list, int i)
 	int k = 0;
 	while (k < i && p_pre != NULL)
 	{
-		p_pre = p_pre->next;
+		p_pre = p_pre->p_next;
 		k++;
 	}
 
 	// 未找到位置 i-1 结点，或者位置 i-1 结点是尾结点，说明 i 为无效索引
-	if (p_pre == NULL || p_pre->next == NULL)
+	if (p_pre == NULL || p_pre->p_next == NULL)
 	{
 		printf("Error: -- DeleteLinkElem -- %d is out of index.\n", i);
 		exit(EXIT_FAILURE);
 	}
 
 	// 进行指针操作及内存释放
-	LNode* p_cur = p_pre->next;
-	p_pre->next = p_cur->next;
-	p_cur->next = NULL;
+	LNode* p_cur = p_pre->p_next;
+	p_pre->p_next = p_cur->p_next;
+	p_cur->p_next = NULL;
 	free(p_cur);
 }
 
@@ -255,58 +255,55 @@ void ReverseLinkList(LinkList* p_list)
 	LNode* p_head = *p_list;
 	
 	// 空链表无需逆置
-	if (p_head->next == NULL) return;
+	if (p_head->p_next == NULL) return;
 	
 	// 初始化相关变量并断开头结点与第一个结点的链接
 	LNode* p_pre = NULL;
-	LNode* p_cur = p_head->next;
-	p_head->next = NULL;
-	LNode* p_next = p_cur->next;
+	LNode* p_cur = p_head->p_next;
+	p_head->p_next = NULL;
+	LNode* p_next = p_cur->p_next;
 
 	// 移动指针，始终在头部插入
 	while (p_cur != NULL)
 	{
 		// 将头结点指针域指向当前结点，将当前结点指针域指向前一个结点，实现头部插入
-		p_head->next = p_cur;
-		p_cur->next = p_pre;
+		p_head->p_next = p_cur;
+		p_cur->p_next = p_pre;
 		// 将当前结点设为前一个结点，后一个结点设为当前结点，后后结点设为后一个结点（需判断是否存在后后结点）
 		p_pre = p_cur;
 		p_cur = p_next;
 		if (p_next != NULL)
 		{
-			p_next = p_next->next;
+			p_next = p_next->p_next;
 		}
 	}
 }
 
 void DestroyLinkList(LinkList* p_list)
 {
-	LNode* p_head = *p_list;
-	if (p_head == NULL) return;
-
-	LNode* p_cur;
-	while (p_head->next)
+	LNode* p_cur = *p_list;
+	LNode* p_next = NULL;
+	while (p_cur)
 	{
-		p_cur = p_head->next;
-		p_head->next = p_cur->next;
+		p_next = p_cur->p_next;
 		free(p_cur);
+		p_cur = p_next;
 	}
-	free(p_head);
 	*p_list = NULL;
 }
 
 int GetLinkLength(LinkList list)
 {
 	int len = 0;
-	while (list->next != NULL)
+	while (list->p_next != NULL)
 	{
-		list = list->next;
+		list = list->p_next;
 		len++;
 	}
 	return len;
 }
 
-ElemType GetLinkElem(LinkList list, int i)
+void GetLinkElem(LinkList list, int i, ElemType* p_elem)
 {
 	if (i < 0)
 	{
@@ -321,7 +318,7 @@ ElemType GetLinkElem(LinkList list, int i)
 	int k = 0;
 	while (k <= i && p_cur != NULL) // 限制 p_cur != NULL，因为当 p_cur 为 NULL 时，则尾结点的位置是 k-1，而 k 的最大值是 i，则尾结点位置最大值为 i-1，从而不存在位置 i 的结点
 	{
-		p_cur = p_cur->next;
+		p_cur = p_cur->p_next;
 		k++;
 	}
 
@@ -332,6 +329,6 @@ ElemType GetLinkElem(LinkList list, int i)
 		exit(EXIT_FAILURE);
 	}
 	
-	// 返回元素
-	return p_cur->elem;
+	// 找到元素
+	*p_elem = p_cur->elem;
 }

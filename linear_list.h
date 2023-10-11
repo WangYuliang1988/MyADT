@@ -54,7 +54,7 @@
 */
 typedef struct
 {
-	ElemType* elem; // 顺序表第一个元素的地址
+	ElemType* p_base; // 顺序表第一个元素的地址
 	int length; // 顺序表当前已包含的元素个数
 	int list_size; // 顺序表当前可容纳的元素个数
 }SeqList;
@@ -84,17 +84,17 @@ void DestroySeqList(SeqList* p_seq);
 /*
 * 获取位置 i 的元素
 */
-ElemType GetSeqElem(SeqList seq, int i);
+void GetSeqElem(SeqList seq, int i, ElemType* p_elem);
 
 /*
 * 获取某个元素的前驱元素
 */
-ElemType GetSeqElemPre(SeqList seq, ElemType cur_e);
+void GetSeqElemPre(SeqList seq, ElemType cur_e, ElemType* p_pre);
 
 /*
 * 获取某个元素的后继元素
 */
-ElemType GetSeqElemNext(SeqList seq, ElemType cur_e);
+void GetSeqElemNext(SeqList seq, ElemType cur_e, ElemType* p_next);
 
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //
@@ -108,7 +108,7 @@ ElemType GetSeqElemNext(SeqList seq, ElemType cur_e);
 typedef struct LNode // 当结构体内部使用该结构体做类型时，结构体名称（即 LNode）不能省略
 {
 	ElemType elem; // 数据域，存储数据
-	struct LNode* next; // 指针域，指向其后续结点，末尾结点的 next 为 NULL
+	struct LNode* p_next; // 指针域，指向其后续结点，末尾结点的 p_next 为 NULL
 }LNode, *LinkList; // LNode 为 struct LNode 的别名，LinkList 为 LNode* 的别名
 
 /*
@@ -146,7 +146,7 @@ int GetLinkLength(LinkList list);
 /*
 * 获取位置 i 的元素
 */
-ElemType GetLinkElem(LinkList list, int i);
+void GetLinkElem(LinkList list, int i, ElemType* p_elem);
 
 #endif // !_WYL_LINEAR_LIST
 

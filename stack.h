@@ -36,10 +36,10 @@
 * 顺序栈
 */
 typedef struct {
-	ElemType* base; // 栈底指针
-	ElemType* top;  // 指向栈顶元素下一个位置
+	ElemType* p_base; // 栈底指针
+	ElemType* p_top;  // 指向栈顶元素下一个位置
 	int stack_size; // 栈当前可容纳的元素个数
-	// int length;  // 根据 base/top 的定义以及指针求差的意义，top - base = 栈当前已包含的元素个数
+	// int length;  // 根据 p_base/p_top 的定义以及指针求差的意义，p_top - p_base = 栈当前已包含的元素个数
 }SeqStack;
 
 /*
@@ -55,7 +55,7 @@ void Push(SeqStack* p_seq_stack, ElemType elem);
 /*
 * 出栈
 */
-ElemType Pop(SeqStack* p_seq_stack);
+void Pop(SeqStack* p_seq_stack, ElemType* p_elem);
 
 /*
 * 销毁
@@ -65,7 +65,7 @@ void DestroySeqStack(SeqStack* p_seq_stack);
 /*
 * 获取栈顶元素
 */
-ElemType GetTop(SeqStack seq_stack);
+void GetTop(SeqStack seq_stack, ElemType* p_elem);
 
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //

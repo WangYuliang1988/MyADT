@@ -7,24 +7,24 @@
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 void InitSeqStack(SeqStack* p_seq_stack)
 {
-	p_seq_stack->base = (ElemType*)malloc(sizeof(ElemType) * SEQ_INIT_SIZE);
-	if (p_seq_stack->base == NULL)
+	p_seq_stack->p_base = (ElemType*)malloc(sizeof(ElemType) * SEQ_INIT_SIZE);
+	if (p_seq_stack->p_base == NULL)
 	{
 		printf("Error: -- InitSeqStack -- fail to alloc memory.\n");
 		exit(EXIT_FAILURE);
 	}
-	p_seq_stack->top = p_seq_stack->base; // 初始化时，base 和 top 指向同一块地址
+	p_seq_stack->p_top = p_seq_stack->p_base; // 初始化时，base 和 p_top 指向同一块地址
 	p_seq_stack->stack_size = SEQ_INIT_SIZE;
 }
 
 void Push(SeqStack* p_seq_stack, ElemType elem)
 {
-	long long length = p_seq_stack->top - p_seq_stack->base;
+	long long length = p_seq_stack->p_top - p_seq_stack->p_base;
 
 	// 判断当前是否栈满，若是，则扩展栈的空间
 	if (length == p_seq_stack->stack_size)
 	{
-		ElemType* nbase = (ElemType*)realloc(p_seq_stack->base, sizeof(ElemType) * (p_seq_stack->stack_size + SEQ_INCREAMENT));
+		ElemType* nbase = (ElemType*)realloc(p_seq_stack->p_base, sizeof(ElemType) * (p_seq_stack->stack_size + SEQ_INCREAMENT));
 		if (nbase == NULL)
 		{
 			printf("Error: -- Push -- fail to realloc memory.\n");
@@ -32,49 +32,49 @@ void Push(SeqStack* p_seq_stack, ElemType elem)
 		}
 		else
 		{
-			p_seq_stack->base = nbase;
-			p_seq_stack->top = nbase + length;
+			p_seq_stack->p_base = nbase;
+			p_seq_stack->p_top = nbase + length;
 			p_seq_stack->stack_size += SEQ_INCREAMENT;
 		}
 	}
 
-	// 将元素入栈，注意 top 始终指向栈顶元素的下一位置
-	*(p_seq_stack->top) = elem;
-	p_seq_stack->top += 1;
+	// 将元素入栈，注意 p_top 始终指向栈顶元素的下一位置
+	*(p_seq_stack->p_top) = elem;
+	p_seq_stack->p_top += 1;
 }
 
-ElemType Pop(SeqStack* p_seq_stack)
+void Pop(SeqStack* p_seq_stack, ElemType* p_elem)
 {
-	if (p_seq_stack->top == p_seq_stack->base)
+	if (p_seq_stack->p_top == p_seq_stack->p_base)
 	{
 		printf("Error: -- Pop -- stack is empty.\n");
 		exit(EXIT_FAILURE);
 	}
 
-	p_seq_stack->top -= 1;
-	return *(p_seq_stack->top);
+	p_seq_stack->p_top -= 1;
+	*p_elem = *(p_seq_stack->p_top);
 }
 
 void DestroySeqStack(SeqStack* p_seq_stack)
 {
 	if (p_seq_stack != NULL)
 	{
-		free(p_seq_stack->base);
-		p_seq_stack->base = NULL;
-		p_seq_stack->top = NULL;
+		free(p_seq_stack->p_base);
+		p_seq_stack->p_base = NULL;
+		p_seq_stack->p_top = NULL;
 		p_seq_stack->stack_size = 0;
 	}
 }
 
-ElemType GetTop(SeqStack seq_stack)
+void GetTop(SeqStack seq_stack, ElemType* p_elem)
 {
-	if (seq_stack.top == seq_stack.base)
+	if (seq_stack.p_top == seq_stack.p_base)
 	{
 		printf("Error: -- Pop -- stack is empty.\n");
 		exit(EXIT_FAILURE);
 	}
 
-	return *(seq_stack.top - 1);
+	*p_elem = *(seq_stack.p_top - 1);
 }
 
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -99,9 +99,10 @@ void Convert(int dec, int target)
 		dec = dec / target;
 	}
 
-	while (stack.top > stack.base)
+	ElemType i;
+	while (stack.p_top > stack.p_base)
 	{
-		ElemType i = Pop(&stack);
+		Pop(&stack, &i);
 		if (i < 10)
 		{
 			printf("%d", i);
@@ -131,16 +132,18 @@ int MatchBracket(char* exp)
 		else if (c == ')' || c == ']' || c == '}')
 		{
 			// 若栈已空，则不匹配
-			if (stack.top == stack.base)
+			if (stack.p_top == stack.p_base)
 			{
 				return 0;
 			}
 			else {
-				char top = GetTop(stack);
+				char p_top;
+				GetTop(stack, &p_top);
 
-				if ((top == '(' && c == ')') || (top == '[' && c == ']') || (top == '{' && c == '}'))
+				if ((p_top == '(' && c == ')') || (p_top == '[' && c == ']') || (p_top == '{' && c == '}'))
 				{
-					Pop(&stack);
+					ElemType elem;
+					Pop(&stack, &elem);
 				}
 				else {
 					return 0;
@@ -152,7 +155,7 @@ int MatchBracket(char* exp)
 	}
 
 	// 结束时栈为空表示匹配，不为空表示不匹配
-	if (stack.top == stack.base)
+	if (stack.p_top == stack.p_base)
 	{
 		return 1;
 	}
@@ -191,19 +194,22 @@ void CalcTwoNum(SeqStack* opStack, SeqStack* numStack)
 	// 操作数栈中取出的第一个栈顶元素是右操作数，第二个栈顶元素是左操作数
 	// 若无法取出两个操作数，说明四则运算的表达式格式有误，终止计算
 
-	char op = Pop(opStack);
-	if (numStack->base == numStack->top)
+	char op;
+	Pop(opStack, &op);
+	if (numStack->p_base == numStack->p_top)
 	{
 		printf("Error: -- CalcExpression -- invalid expression.\n");
 		exit(EXIT_FAILURE);
 	}
-	int right = Pop(numStack);
-	if (numStack->base == numStack->top)
+	int right;
+	Pop(numStack, &right);
+	if (numStack->p_base == numStack->p_top)
 	{
 		printf("Error: -- CalcExpression -- invalid expression.\n");
 		exit(EXIT_FAILURE);
 	}
-	int left = Pop(numStack);
+	int left;
+	Pop(numStack, &left);
 
 	int r = 0;
 	switch (op)
@@ -251,7 +257,8 @@ int CalcExpression(char* exp)
 			// 需要先将上个数字出栈，同当前数字结合后再进栈
 			if (prec >= '0' && prec <= '9')
 			{
-				int pren = Pop(&numStack);
+				int pren;
+				Pop(&numStack, &pren);
 				n = pren * 10 + n;
 			}
 			
@@ -263,7 +270,9 @@ int CalcExpression(char* exp)
 			// 运算符栈顶已有元素，则比较当前运算符与栈顶运算符优先级：
 			//	1. 若当前 > 栈顶，则当前运算符进栈；
 			//	2. 若当前 <= 栈顶，则栈顶运算符及对应的操作数出栈进行计算，然后继续与下一个栈顶运算符进行比较，直至当前运算符进栈。
-			while (opStack.base < opStack.top && !IsHigher(curc, GetTop(opStack)))
+			char topc;
+			GetTop(opStack, &topc);
+			while (opStack.p_base < opStack.p_top && !IsHigher(curc, topc))
 			{
 				CalcTwoNum(&opStack, &numStack);
 			}
@@ -281,9 +290,11 @@ int CalcExpression(char* exp)
 	}
 
 	// 计算结果
-	while (opStack.base < opStack.top)
+	while (opStack.p_base < opStack.p_top)
 	{
 		CalcTwoNum(&opStack, &numStack);
 	}
-	return Pop(&numStack);
+	int rs;
+	Pop(&numStack, &rs);
+	return rs;
 }
