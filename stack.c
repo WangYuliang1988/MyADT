@@ -116,14 +116,14 @@ void Convert(int dec, int target)
 	DestroySeqStack(&stack);
 }
 
-int MatchBracket(char* exp)
+int MatchBracket(char* p_exp)
 {
 	SeqStack stack;
 	InitSeqStack(&stack);
 
-	while (*exp != '\0')
+	while (*p_exp != '\0')
 	{
-		char c = *exp;
+		char c = *p_exp;
 
 		if (c == '(' || c == '[' || c == '{')
 		{
@@ -151,7 +151,7 @@ int MatchBracket(char* exp)
 			}
 		}
 
-		exp++;
+		p_exp++;
 	}
 
 	// 结束时栈为空表示匹配，不为空表示不匹配
@@ -233,7 +233,7 @@ void CalcTwoNum(SeqStack* opStack, SeqStack* numStack)
 	Push(numStack, r);
 }
 
-int CalcExpression(char* exp)
+int CalcExpression(char* p_exp)
 {
 	// 设立操作数栈、运算符栈
 	SeqStack numStack;
@@ -244,9 +244,9 @@ int CalcExpression(char* exp)
 	// 从左到右遍历四则运算表达式，按规则进行入栈出栈
 	char prec = '\0';
 	char curc = '\0';
-	while (*exp != '\0')
+	while (*p_exp != '\0')
 	{
-		curc = *exp;
+		curc = *p_exp;
 
 		// 数字进入操作数栈
 		if (curc >= '0' && curc <= '9')
@@ -286,7 +286,7 @@ int CalcExpression(char* exp)
 		}
 
 		prec = curc;
-		exp++;
+		p_exp++;
 	}
 
 	// 计算结果

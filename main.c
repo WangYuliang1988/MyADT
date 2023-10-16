@@ -2,6 +2,7 @@
 #include "linear_list.h"
 #include "stack.h"
 #include "queue.h"
+#include "ds_string.h"
 
 int main(void)
 {
@@ -119,4 +120,10 @@ int main(void)
 	printf("\b\b \n");
 	// Ïú»Ù
 	DestroySeqQueue(&seq_queue);
+
+	// ×Ö·û´®Ä£Ê½Æ¥Åä
+	SString s = { 18, 'a', 'c', 'a', 'a', 'c', 'b', 'c', 'a', 'b', 'c', 'a', 'a', 'c', 'b', 'c', 'a', 'b', 'c' };
+	SString p = { 6, 'c', 'a', 'a', 'c', 'b', 'c' };
+	printf("Plain match index: %d\n", SStringIndex(s, p, 12));
+	printf("KMP match index: %d\n", SStringIndexKMP(s, p, 12));
 }

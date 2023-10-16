@@ -127,12 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ds_string.c" />
     <ClCompile Include="linear_list.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="queue.c" />
     <ClCompile Include="stack.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ds_string.h" />
     <ClInclude Include="linear_list.h" />
     <ClInclude Include="queue.h" />
     <ClInclude Include="stack.h" />

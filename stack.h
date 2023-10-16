@@ -85,13 +85,13 @@ void Convert(int dec, int target);
 * 
 * 算法：左括号进栈。右括号检测是否与栈顶元素匹配，匹配则栈顶出栈，不匹配则整体不匹配。结束时栈为空表示匹配，不为空表示不匹配。
 */
-int MatchBracket(char* exp);
+int MatchBracket(char* p_exp);
 
 /*
 * 四则运算
 * 
 * 算法：设立操作数栈、运算符栈两个栈，然后根据四则运算符优先级，分别对两个栈进行入栈出栈，得出计算结果。
 */
-int CalcExpression(char* exp);
+int CalcExpression(char* p_exp);
 
 #endif // !_WYL_STACK
