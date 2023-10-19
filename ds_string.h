@@ -3,8 +3,8 @@
 //
 // 用于学习数据结构串（字符串）相关知识
 //
-#ifndef WYL_DS_STRING
-#define WYL_DS_STRING
+#ifndef _WYL_DS_STRING
+#define _WYL_DS_STRING
 
 //
 // 串（字符串）
@@ -64,4 +64,4 @@ typedef struct // 定义链串数据结构
 	int length;
 }LString;
 
-#endif // !WYL_DS_STRING
+#endif // !_WYL_DS_STRING

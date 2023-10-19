@@ -30,6 +30,9 @@
     <ClCompile Include="ds_string.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ds_array.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="linear_list.h">
@@ -45,6 +48,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ds_string.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ds_array.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

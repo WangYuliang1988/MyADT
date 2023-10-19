@@ -3,6 +3,7 @@
 #include "stack.h"
 #include "queue.h"
 #include "ds_string.h"
+#include "ds_array.h"
 
 int main(void)
 {
@@ -126,4 +127,34 @@ int main(void)
 	SString p = { 6, 'c', 'a', 'a', 'c', 'b', 'c' };
 	printf("Plain match index: %d\n", SStringIndex(s, p, 12));
 	printf("KMP match index: %d\n", SStringIndexKMP(s, p, 12));
+
+	// 转置矩阵
+	TSMatrix tsm;
+	tsm.mu = 10;
+	tsm.nu = 20;
+	tsm.tu = 8;
+	tsm.data[1].i = 1, tsm.data[1].j = 2, tsm.data[1].e = 12;
+	tsm.data[2].i = 1, tsm.data[2].j = 3, tsm.data[2].e = 9;
+	tsm.data[3].i = 3, tsm.data[3].j = 1, tsm.data[3].e = -3;
+	tsm.data[4].i = 3, tsm.data[4].j = 6, tsm.data[4].e = 14;
+	tsm.data[5].i = 4, tsm.data[5].j = 3, tsm.data[5].e = 24;
+	tsm.data[6].i = 5, tsm.data[6].j = 2, tsm.data[6].e = 18;
+	tsm.data[7].i = 6, tsm.data[7].j = 1, tsm.data[7].e = 15;
+	tsm.data[8].i = 6, tsm.data[8].j = 4, tsm.data[8].e = -7;
+	// 按列转置
+	TSMatrix tst;
+	TransTSMatrix(tsm, &tst);
+	printf("Transpose TSMatrix by column:\n");
+	for (int i = 1; i <= tst.tu; i++)
+	{
+		printf("(%d, %d, %d)\n", tst.data[i].i, tst.data[i].j, tst.data[i].e);
+	}
+	// 快速转置
+	TSMatrix tstf;
+	TransTSMatrix(tsm, &tstf);
+	printf("Fast transpose TSMatrix by column:\n");
+	for (int i = 1; i <= tstf.tu; i++)
+	{
+		printf("(%d, %d, %d)\n", tstf.data[i].i, tstf.data[i].j, tstf.data[i].e);
+	}
 }
