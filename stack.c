@@ -77,6 +77,11 @@ void GetTop(SeqStack seq_stack, ElemType* p_elem)
 	*p_elem = *(seq_stack.p_top - 1);
 }
 
+int IsStackEmpty(SeqStack seq_stack)
+{
+	return seq_stack.p_top == seq_stack.p_base;
+}
+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //
 // 定义基于栈的算法应用
@@ -105,11 +110,11 @@ void Convert(int dec, int target)
 		Pop(&stack, &i);
 		if (i < 10)
 		{
-			printf("%d", i);
+			printf("%lld", i);
 		}
 		else
 		{
-			printf("%c", i + 55);
+			printf("%c", (int)i + 55);
 		}
 	}
 
@@ -138,7 +143,7 @@ int MatchBracket(char* p_exp)
 			}
 			else {
 				char p_top;
-				GetTop(stack, &p_top);
+				GetTop(stack, (ElemType*)(&p_top));
 
 				if ((p_top == '(' && c == ')') || (p_top == '[' && c == ']') || (p_top == '{' && c == '}'))
 				{
@@ -195,21 +200,21 @@ void CalcTwoNum(SeqStack* opStack, SeqStack* numStack)
 	// 若无法取出两个操作数，说明四则运算的表达式格式有误，终止计算
 
 	char op;
-	Pop(opStack, &op);
+	Pop(opStack, (ElemType*)(&op));
 	if (numStack->p_base == numStack->p_top)
 	{
 		printf("Error: -- CalcExpression -- invalid expression.\n");
 		exit(EXIT_FAILURE);
 	}
 	int right;
-	Pop(numStack, &right);
+	Pop(numStack, (ElemType*)(&right));
 	if (numStack->p_base == numStack->p_top)
 	{
 		printf("Error: -- CalcExpression -- invalid expression.\n");
 		exit(EXIT_FAILURE);
 	}
 	int left;
-	Pop(numStack, &left);
+	Pop(numStack, (ElemType*)(&left));
 
 	int r = 0;
 	switch (op)
@@ -258,7 +263,7 @@ int CalcExpression(char* p_exp)
 			if (prec >= '0' && prec <= '9')
 			{
 				int pren;
-				Pop(&numStack, &pren);
+				Pop(&numStack, (ElemType*)(&pren));
 				n = pren * 10 + n;
 			}
 			
@@ -271,7 +276,7 @@ int CalcExpression(char* p_exp)
 			//	1. 若当前 > 栈顶，则当前运算符进栈；
 			//	2. 若当前 <= 栈顶，则栈顶运算符及对应的操作数出栈进行计算，然后继续与下一个栈顶运算符进行比较，直至当前运算符进栈。
 			char topc;
-			GetTop(opStack, &topc);
+			GetTop(opStack, (ElemType*)(&topc));
 			while (opStack.p_base < opStack.p_top && !IsHigher(curc, topc))
 			{
 				CalcTwoNum(&opStack, &numStack);
@@ -295,6 +300,6 @@ int CalcExpression(char* p_exp)
 		CalcTwoNum(&opStack, &numStack);
 	}
 	int rs;
-	Pop(&numStack, &rs);
+	Pop(&numStack, (ElemType*)(&rs));
 	return rs;
 }

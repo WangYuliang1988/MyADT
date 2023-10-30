@@ -4,6 +4,7 @@
 #include "queue.h"
 #include "ds_string.h"
 #include "ds_array.h"
+#include "tree.h"
 
 int main(void)
 {
@@ -26,7 +27,7 @@ int main(void)
 	{
 		ElemType elem;
 		GetSeqElem(seq_list, i, &elem);
-		printf("%d, ", elem);
+		printf("%lld, ", elem);
 	}
 	printf("\b\b \n");
 	// 销毁
@@ -51,7 +52,7 @@ int main(void)
 	{
 		ElemType elem;
 		GetLinkElem(link_list, i, &elem);
-		printf("%d, ", elem);
+		printf("%lld, ", elem);
 	}
 	printf("\b\b \n");
 	// 销毁
@@ -72,7 +73,7 @@ int main(void)
 	{
 		ElemType elem;
 		Pop(&seq_stack, &elem);
-		printf("%d, ", elem);
+		printf("%lld, ", elem);
 	}
 	printf("\b\b \n");
 	// 销毁
@@ -93,7 +94,7 @@ int main(void)
 	{
 		ElemType elem;
 		DeLinkQueue(&link_queue, &elem);
-		printf("%d, ", elem);
+		printf("%lld, ", elem);
 	}
 	printf("\b\b \n");
 	// 销毁
@@ -116,7 +117,7 @@ int main(void)
 	{
 		ElemType elem;
 		DeSeqQueue(&seq_queue, &elem);
-		printf("%d, ", elem);
+		printf("%lld, ", elem);
 	}
 	printf("\b\b \n");
 	// 销毁
@@ -131,7 +132,7 @@ int main(void)
 	// 转置矩阵
 	TSMatrix tsm;
 	tsm.mu = 10;
-	tsm.nu = 20;
+	tsm.nu = 10;
 	tsm.tu = 8;
 	tsm.data[1].i = 1, tsm.data[1].j = 2, tsm.data[1].e = 12;
 	tsm.data[2].i = 1, tsm.data[2].j = 3, tsm.data[2].e = 9;
@@ -147,7 +148,7 @@ int main(void)
 	printf("Transpose TSMatrix by column:\n");
 	for (int i = 1; i <= tst.tu; i++)
 	{
-		printf("(%d, %d, %d)\n", tst.data[i].i, tst.data[i].j, tst.data[i].e);
+		printf("(%d, %d, %lld)\n", tst.data[i].i, tst.data[i].j, tst.data[i].e);
 	}
 	// 快速转置
 	TSMatrix tstf;
@@ -155,6 +156,62 @@ int main(void)
 	printf("Fast transpose TSMatrix by column:\n");
 	for (int i = 1; i <= tstf.tu; i++)
 	{
-		printf("(%d, %d, %d)\n", tstf.data[i].i, tstf.data[i].j, tstf.data[i].e);
+		printf("(%d, %d, %lld)\n", tstf.data[i].i, tstf.data[i].j, tstf.data[i].e);
 	}
+
+	// 二叉树
+	BiTree bt;
+	// 初始化
+	InitBiTree(&bt);
+	// 生成二叉树
+	CreateBiTree(&bt, "A(B(D(,G),E),C(F,))");
+	// 先序遍历-递归实现
+	printf("Traverse binary tree recursively by pre order: ");
+	PreOrderTraverseRecursively(bt);
+	printf("\n");
+	// 中序遍历-递归实现
+	printf("Traverse binary tree recursively by in order: ");
+	InOrderTraverseRecursively(bt);
+	printf("\n");
+	// 后序遍历-递归实现
+	printf("Traverse binary tree recursively by post order: ");
+	PostOrderTraverseRecursively(bt);
+	printf("\n");
+	// 先序遍历
+	printf("Traverse binary tree by pre order: ");
+	PreOrderTraverse(bt);
+	printf("\n");
+	// 中序遍历
+	printf("Traverse binary tree by in order: ");
+	InOrderTraverse(bt);
+	printf("\n");
+	// 后序遍历
+	printf("Traverse binary tree by post order: ");
+	PostOrderTraverse(bt);
+	printf("\n");
+	// 销毁
+	DestroyBiTree(&bt);
+
+	// 构建哈夫曼树
+	HuffmanTree ht;
+	float warr[] = { 0.2, 0.3, 0.5, 0.2, 0.1, 0.3 };
+	int n = sizeof(warr) / sizeof(warr[0]); // 叶子结点个数
+	CreateHuffmanTree(&ht, warr, n);
+	// 打印
+	printf("Huffman tree:\n");
+	for (int i = 0; i < 2 * n - 1; i++)
+	{
+		printf("weight: %f, par: %d, lch: %d, rch: %d\n", ht[i].weight, ht[i].parent, ht[i].lch, ht[i].rch);
+	}
+	// 哈夫曼编码
+	char carr[] = { 'A','B', 'C', 'D', 'E', 'F' };
+	HuffmanCode hc;
+	HuffmanCoding(ht, &hc, n);
+	printf("Huffman code:\n");
+	for (int i = 0; i < n; i++)
+	{
+		printf("%c: %s\n", carr[i], hc[i]);
+	}
+	// 销毁
+	DestroyHuffmanTree(&ht);
 }

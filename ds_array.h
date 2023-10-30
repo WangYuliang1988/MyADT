@@ -97,7 +97,7 @@ typedef struct
 //			十字链表，优点：可以对稀疏矩阵进行添加或删除非零元素的操作，缺点：不能随机存取。
 //
 
-#define MATRIX_MAX_SIZE 12500
+#define MATRIX_MAX_SIZE 100
 #define MATRIX_MAX_RC 100
 
 /*

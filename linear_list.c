@@ -98,7 +98,7 @@ void GetSeqElemPre(SeqList seq, ElemType cur_e, ElemType* p_pre)
 		{
 			if (i == 0)
 			{
-				printf("Error: -- GetSeqElemPre -- %d is already the first element.\n", cur_e);
+				printf("Error: -- GetSeqElemPre -- %lld is already the first element.\n", cur_e);
 				exit(EXIT_FAILURE); // 第一个元素没有前驱
 			}
 			else
@@ -107,7 +107,7 @@ void GetSeqElemPre(SeqList seq, ElemType cur_e, ElemType* p_pre)
 			}
 		}
 	}
-	printf("Error: -- GetSeqElemPre -- %d is not in the list.\n", cur_e);
+	printf("Error: -- GetSeqElemPre -- %lld is not in the list.\n", cur_e);
 	exit(EXIT_FAILURE);
 }
 
@@ -119,7 +119,7 @@ void GetSeqElemNext(SeqList seq, ElemType cur_e, ElemType* p_next)
 		{
 			if (i == seq.length - 1)
 			{
-				printf("Error: -- GetSeqElemNext -- %d is already the last element.\n", cur_e);
+				printf("Error: -- GetSeqElemNext -- %lld is already the last element.\n", cur_e);
 				exit(EXIT_FAILURE); // 最后一个元素没有后继
 			}
 			else
@@ -128,7 +128,7 @@ void GetSeqElemNext(SeqList seq, ElemType cur_e, ElemType* p_next)
 			}
 		}
 	}
-	printf("Error: -- GetSeqElemNext -- %d is not in the list.\n", cur_e);
+	printf("Error: -- GetSeqElemNext -- %lld is not in the list.\n", cur_e);
 	exit(EXIT_FAILURE);
 }
 

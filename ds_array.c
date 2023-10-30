@@ -50,6 +50,11 @@ void FastTransTSMatrix(TSMatrix tsm, TSMatrix* p_tst)
 	// 存储原矩阵每列包含元素个数的数组
 	// 索引即列序，值即该列包含的元素个数
 	int* col_count_arr = (int*)malloc(mem_size);
+	if (col_count_arr == NULL)
+	{
+		printf("Error: -- FastTransTSMatrix -- fail to malloc memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	// 先将每列元素个数初始化为 0
 	for (int col = 1; col <= tsm.nu; col++)
 	{
@@ -64,6 +69,11 @@ void FastTransTSMatrix(TSMatrix tsm, TSMatrix* p_tst)
 	// 存储原矩阵每列当前项应该存入转置矩阵三元组数组中位置的数组
 	// 索引即列序，值即该列当前项应存入位置
 	int* col_cur_idx_arr = (int*)malloc(mem_size);
+	if (col_cur_idx_arr == NULL)
+	{
+		printf("Error: -- FastTransTSMatrix -- fail to malloc memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	// 第 1 列第一项应存入的位置是 1
 	col_cur_idx_arr[1] = 1;
 	// 依次计算第 2 列开始每列第一项应存入的位置

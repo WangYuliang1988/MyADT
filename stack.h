@@ -67,6 +67,13 @@ void DestroySeqStack(SeqStack* p_seq_stack);
 */
 void GetTop(SeqStack seq_stack, ElemType* p_elem);
 
+/*
+* 判断栈是否为空
+* 
+* 1空，0非空
+*/
+int IsStackEmpty(SeqStack seq_stack);
+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //
 // 基于栈的算法应用
