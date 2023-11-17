@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="ds_array.c" />
     <ClCompile Include="ds_string.c" />
+    <ClCompile Include="graph.c" />
     <ClCompile Include="linear_list.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="queue.c" />
@@ -138,6 +139,7 @@
   <ItemGroup>
     <ClInclude Include="ds_array.h" />
     <ClInclude Include="ds_string.h" />
+    <ClInclude Include="graph.h" />
     <ClInclude Include="linear_list.h" />
     <ClInclude Include="queue.h" />
     <ClInclude Include="stack.h" />

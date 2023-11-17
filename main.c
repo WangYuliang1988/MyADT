@@ -5,6 +5,7 @@
 #include "ds_string.h"
 #include "ds_array.h"
 #include "tree.h"
+#include "graph.h"
 
 int main(void)
 {
@@ -194,7 +195,7 @@ int main(void)
 
 	// 构建哈夫曼树
 	HuffmanTree ht;
-	float warr[] = { 0.2, 0.3, 0.5, 0.2, 0.1, 0.3 };
+	float warr[] = { 0.2f, 0.3f, 0.5f, 0.2f, 0.1f, 0.3f };
 	int n = sizeof(warr) / sizeof(warr[0]); // 叶子结点个数
 	CreateHuffmanTree(&ht, warr, n);
 	// 打印
@@ -214,4 +215,76 @@ int main(void)
 	}
 	// 销毁
 	DestroyHuffmanTree(&ht);
+
+	// 图
+	VertexType vexs[] = { 1, 2, 3, 4, 5, 6 }; // 图的顶点集合
+	int vexnum = sizeof(vexs) / sizeof(vexs[0]); // 图的顶点个数
+	char* adjs = "(1,2,3)(1,4,2)(1,5,5)(2,3,2)(2,4,1)(2,6,5)(3,5,4)(3,6,4)(4,6,3)"; // 描述边的字符串
+	char* arcs = "<2,3,2><2,5,3><2,6,4><3,5,1><3,1,6><5,4,2><6,4,2><6,1,3><4,1,2>"; // 描述弧的字符串
+	// 基于顺序存储构建图
+	MGraph mg;
+	CreateMGraph(&mg, vexs, vexnum, adjs);
+	// 打印顺序存储结构图
+	printf("MGraph: kind: %d, vexnum: %d, arcnum: %d\n", mg.kind, mg.vexnum, mg.arcnum);
+	for (int i = 0; i < vexnum; i++)
+	{
+		for (int k = 0; k < vexnum; k++)
+		{
+			if (mg.arcs[i][k].adj == INFINITY)
+			{
+				printf("infi ");
+			}
+			else
+			{
+				printf("%4d ", mg.arcs[i][k].adj);
+			}
+		}
+		printf("\b \n");
+	}
+	// 深度优先搜索
+	DFSTraverse(mg);
+	// 广度优先搜索
+	BFSTraverse(mg);
+	// 构建最小生成树-普里姆算法
+	MiniSpanTreePrim(mg);
+	// 构建最小生成树-克鲁斯卡尔算法
+	MiniSpanTreeKruskal(mg);
+	// 基于邻接表构建图
+	ALGraph ag;
+	CreateALGraph(&ag, vexs, vexnum, arcs);
+	// 打印邻接表结构图
+	printf("ALGraph: kind: %d, vexnum: %d, arcnum: %d\n", ag.kind, ag.vexnum, ag.arcnum);
+	for (int i = 0; i < ag.vexnum; i++)
+	{
+		printf("%d ->", ag.vertices[i].data);
+		ArcNode* p_arc = ag.vertices[i].p_arc;
+		if (p_arc)
+		{
+			while (p_arc)
+			{
+				printf(" %d", ag.vertices[p_arc->adjvex].data);
+				p_arc = p_arc->p_next;
+			}
+		}
+		else
+		{
+			printf(" NULL");
+		}
+		printf("\n");
+	}
+	// 拓扑排序
+	int tparr[MAX_VERTEX_NUM];
+	TopologicalSort(ag, tparr);
+	printf("TopologicalSort: ");
+	for (int i = 0; i < ag.vexnum; i++)
+	{
+		printf("%d, ", ag.vertices[tparr[i]].data);
+	}
+	printf("\b\b \n");
+	// 关键路径
+	CriticalPath(ag);
+	// 迪杰斯特拉最短路径
+	Dijkstra(ag, 2);
+	// 弗洛伊德最短路径
+	Floyd(ag);
 }

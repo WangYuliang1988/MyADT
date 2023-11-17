@@ -102,6 +102,13 @@ void DestroyLinkQueue(LinkQueue* p_queue);
 */
 void GetLinkQueueHead(LinkQueue queue, ElemType* p_elem);
 
+/*
+* 判断队列是否为空
+* 
+* 1 空，0 非空
+*/
+int IsLinkQueueEmpty(LinkQueue queue);
+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //
 // 基于顺序存储结构的队列（顺序队列）

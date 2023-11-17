@@ -83,6 +83,11 @@ void GetLinkQueueHead(LinkQueue queue, ElemType* p_elem)
 	*p_elem = queue.p_front->p_next->elem;
 }
 
+int IsLinkQueueEmpty(LinkQueue queue)
+{
+	return queue.p_front == queue.p_rear;
+}
+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //
 // 定义顺序队列基本操作

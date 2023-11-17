@@ -70,7 +70,7 @@ void GetTop(SeqStack seq_stack, ElemType* p_elem);
 /*
 * ÅÐ¶ÏÕ»ÊÇ·ñÎª¿Õ
 * 
-* 1¿Õ£¬0·Ç¿Õ
+* 1 ¿Õ£¬0 ·Ç¿Õ
 */
 int IsStackEmpty(SeqStack seq_stack);
 
