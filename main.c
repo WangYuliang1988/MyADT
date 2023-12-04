@@ -6,6 +6,7 @@
 #include "ds_array.h"
 #include "tree.h"
 #include "graph.h"
+#include "search.h"
 
 int main(void)
 {
@@ -162,8 +163,6 @@ int main(void)
 
 	// 二叉树
 	BiTree bt;
-	// 初始化
-	InitBiTree(&bt);
 	// 生成二叉树
 	CreateBiTree(&bt, "A(B(D(,G),E),C(F,))");
 	// 先序遍历-递归实现
@@ -287,4 +286,66 @@ int main(void)
 	Dijkstra(ag, 2);
 	// 弗洛伊德最短路径
 	Floyd(ag);
+
+	// 静态查找表
+	ElemType earr[] = { 10, 14, 19, 26, 27, 31, 33, 35, 42, 44, 0 }; // 前 10 个是有效数据，最后一位用于放监视哨
+	SSTable st = { earr, sizeof(earr) / sizeof(ElemType) - 1 }; // earr 数组最后一位是预留位，不应算作查找表的长度
+	printf("SSTable: ");
+	for (int i = 0; i < st.length; i++)
+	{
+		printf("%lld, ", st.earr[i]);
+	}
+	printf("\b\b \n");
+	// 查找目标
+	ElemType target = 31;
+	// 顺序查找
+	printf("SearchSeq: %lld is at index %d.\n", target, SearchSeq(st, target));
+	// 折半查找
+	printf("SearchBin: %lld is at index %d.\n", target, SearchBin(st, target));
+	// 分块查找
+	printf("SearchBlk: %lld is at index %d.\n", target, SearchBlk(st, target));
+	// 次优查找树查找-用于关键字查找概率不同的场景
+	float parr[] = { 0.1f, 0.1f, 0.2f, 0.5f, 0.3f, 0.4f, 0.4f, 0.3f, 0.5f, 0.2f };
+	printf("SearchOpt: %lld is at index %d.\n", target, SearchOpt(st.earr, parr, st.length, target));
+
+	// 二叉排序树
+	BiTree bst = NULL;
+	ElemType bearr[] = { 41, 20, 11, 29, 32, 65, 50, 91, 72, 99 };
+	// 插入
+	for (int i = 0; i < sizeof(bearr) / sizeof(bearr[0]); i++)
+	{
+		InsertBST(&bst, bearr[i]);
+	}
+	// 删除
+	DeleteBST(&bst, 65);
+	// 查找
+	BiTree bstpos = NULL;
+	SearchBST(bst, 50, &bstpos);
+	printf("SearchBST: %d is at address %p.\n", 50, bstpos);
+
+	// 平衡二叉排序树
+	AVLTree avt = NULL;
+	ElemType avarr[] = { 1, 23, 45, 34, 98, 9, 4, 35, 24 };
+	// 插入
+	int deeper;
+	for (int i = 0; i < sizeof(avarr) / sizeof(avarr[0]); i++)
+	{
+		InsertAVL(&avt, avarr[i], &deeper);
+	}
+	// 查找
+	AVLTree avpos = NULL;
+	SearchAVL(avt, 98, &avpos);
+	printf("SearchAVL: %d is at address %p.\n", 98, avpos);
+
+	// 哈希表
+	HashTable hat;
+	// 初始化
+	InitHashTable(&hat);
+	// 插入
+	for (int i = 0; i < MAX_HASH_SIZE; i++)
+	{
+		InsertHashTable(&hat, i);
+	}
+	// 查找
+	printf("SearchHashTable: %d is at adress %p.\n", 20, SearchHashTable(hat, 20));
 }

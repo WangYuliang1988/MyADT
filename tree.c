@@ -5,12 +5,6 @@
 // 定义二叉树基本操作
 //
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-void InitBiTree(BiTree* p_bt)
-{
-	// 初始化，即将头指针设为 NULL
-	*p_bt = NULL;
-}
-
 void CreateBiTree(BiTree* p_bt, char* p_desc)
 {
 	// 根据描述 p_desc，构建对应结构的二叉树
@@ -30,6 +24,8 @@ void CreateBiTree(BiTree* p_bt, char* p_desc)
 	//		若 ch 为左括号 (，则设 k = 0，表示之后的结点将作为之前结点的左孩子，并将之前的结点入栈；
 	//		若 ch 为逗号 ,，则设 k = 1，表示之后的结点将作为之前结点的右孩子；
 	//		若 ch 为右括号 )，表明以当前栈顶结点为根的（子）二叉树已构建完毕，将栈顶结点出栈。
+
+	*p_bt = NULL; // 初始时二叉树为空，即头指针（*p_bt）为 NULL
 
 	SeqStack stack;
 	InitSeqStack(&stack);
@@ -225,7 +221,7 @@ void InOrderTraverse(BiTree bt)
 		else
 		{
 			Pop(&stack, (ElemType*)(&p_cur));
-			printf("%c", (int)p_cur->e);
+			printf("%d,", (int)p_cur->e);
 			p_cur = p_cur->p_rch;
 		}
 	}

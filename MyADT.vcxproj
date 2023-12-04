@@ -133,6 +133,7 @@
     <ClCompile Include="linear_list.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="queue.c" />
+    <ClCompile Include="search.c" />
     <ClCompile Include="stack.c" />
     <ClCompile Include="tree.c" />
   </ItemGroup>
@@ -142,6 +143,7 @@
     <ClInclude Include="graph.h" />
     <ClInclude Include="linear_list.h" />
     <ClInclude Include="queue.h" />
+    <ClInclude Include="search.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="unidef.h" />

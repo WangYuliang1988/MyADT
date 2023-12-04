@@ -224,11 +224,6 @@ typedef struct BiTNode
 }BiTNode, *BiTree; // 二叉树由链表表示，链表又由头指针（类型为 BiTNode*）表示，故将 BiTNode* 类型定义为 BiTree 类型
 
 /*
-* 初始化
-*/
-void InitBiTree(BiTree* p_bt);
-
-/*
 * 构建
 */
 void CreateBiTree(BiTree* p_bt, char* p_desc);
