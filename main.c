@@ -7,6 +7,7 @@
 #include "tree.h"
 #include "graph.h"
 #include "search.h"
+#include "sort.h"
 
 int main(void)
 {
@@ -348,4 +349,32 @@ int main(void)
 	}
 	// ≤È’“
 	printf("SearchHashTable: %d is at adress %p.\n", 20, SearchHashTable(hat, 20));
+
+	// ≈≈–Ú
+	int sarr[] = { 3, 2, 5, 1, 9, 20, 20, 16, 18, 1 };
+	int alen = sizeof(sarr) / sizeof(sarr[0]);
+	// ÷±Ω”≤Â»Î≈≈–Ú
+	InsertSort(sarr, alen);
+	// ’€∞Î≤Â»Î≈≈–Ú
+	BiInsertSort(sarr, alen);
+	// ∂˛¬∑≤Â»Î≈≈–Ú
+	TwInsertSort(sarr, alen);
+	// œ£∂˚≈≈–Ú
+	ShellInsert(sarr, alen);
+	// √∞≈›≈≈–Ú
+	BubbleSort(sarr, alen);
+	// øÏÀŸ≈≈–Ú
+	QuickSort(sarr, alen, 0, alen - 1);
+	// ºÚµ•—°‘Ò≈≈–Ú
+	SelectSort(sarr, alen);
+	// ∂—≈≈–Ú
+	HeapSort(sarr, alen);
+	// πÈ≤¢≈≈–Ú
+	MergeSort(sarr, alen);
+	// º∆ ˝≈≈–Ú
+	CountSort(sarr, alen, 20);
+	// Õ∞≈≈–Ú
+	BucketSort(sarr, alen, 20);
+	// ª˘ ˝≈≈–Ú
+	RadixSort(sarr, alen);
 }
